@@ -91,6 +91,10 @@ function LandingPage() {
     setGameTokens(obj);
   }, [showSplitTokensModal]);
   console.log("gameTokens: ", gameTokens);
+
+  const gameClickHanlder = (game) => {
+    console.log("game: ", game);
+  };
   return (
     <>
       <Row className="d-flex justify-content-center">
@@ -115,7 +119,7 @@ function LandingPage() {
             <CardBody>
               <Row>
                 <Col xs={12} md={10} className="bg-secondary m-auto">
-                  <div className="w-100 p-3">
+                  <div className="w-100 p-3" onClick={gameClickHanlder("g1")}>
                     <Link
                       to="/deal-or-nodeal"
                       style={{ textDecoration: "none" }}

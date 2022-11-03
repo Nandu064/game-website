@@ -36,6 +36,12 @@ function DealOrNoDeal() {
   const [winAmount, setWinAmount] = useState();
   const winAmountRef = useRef();
   const [currentGameTokens, setCurrentGameTokens] = useState();
+  const [moneyModal, setMoneyModal] = useState(false);
+  const [accepted, setAccepted] = useState(false);
+  const [deductedTokens, setDeductedTokens] = useState(200);
+  const [finalTokens, setFinalTokens] = useState();
+  const [gameCompleted, setGameCompleted] = useState(false);
+  const [restartModal, setRestartModal] = useState(false);
 
   const shuffle = (array) => {
     var currentIndex = array.length,
@@ -89,6 +95,10 @@ function DealOrNoDeal() {
   const handleDealModal = () => {
     setDealModal(!dealModal);
   };
+
+  const handleMoneyModal = () => {
+    setMoneyModal(!moneyModal);
+  };
   const numberHandler = (number) => {
     if (!gameStarted) {
       setAlertPopUp({
@@ -109,14 +119,16 @@ function DealOrNoDeal() {
     if (lastOpenedBox === number) {
       setWinModal(true);
       setWinAmount(amounts[lastOpenedBox - 1]);
+      setGameCompleted(true);
       winAmountRef.current = amounts[lastOpenedBox];
     }
   };
   const handleContinue = () => {
     let avTokens = Number(localStorage.getItem("gT"));
     console.log("avTokens: ", avTokens);
-    let total = avTokens + winAmount;
-    localStorage.setItem("gT", total);
+    setGameCompleted(true);
+    // let total = avTokens + winAmount;
+    // localStorage.setItem("gT", total);
     localStorage.setItem("g1", currentGameTokens + winAmount);
     setWinModal(false);
     window.location.reload();
@@ -134,9 +146,9 @@ function DealOrNoDeal() {
   }, [selectedBox.length]);
   const startGame = () => {
     if (gameStarted) {
-      window.location.reload();
+      return;
+      // window.location.reload();
     } else {
-      console.log("currentGameTokens: ", currentGameTokens);
       if (Number(currentGameTokens) <= 0) {
         setAlertPopUp({
           open: true,
@@ -145,59 +157,84 @@ function DealOrNoDeal() {
         });
         return;
       }
-      let number = parseInt(prompt("Select a box between 1 to 12"));
-      //   setSelectedNumber(number);
-      selectedNumberRef.current = number;
-      setLastOpenedBox(number);
+      setMoneyModal(true);
+      // if (accepted) {
+      //   console.log("currentGameTokens: ", currentGameTokens);
+      //   let number = parseInt(prompt("Select a box between 1 to 12"));
+      //   //   setSelectedNumber(number);
+      //   selectedNumberRef.current = number;
+      //   setLastOpenedBox(number);
 
-      console.log("selectedNumber: ", selectedNumberRef.current);
-      if (number < 1 || number > 12) {
-        setAlertPopUp({
-          open: true,
-          message: "Please select the number between 1 and 12",
-          color: "info",
-        });
-        return false;
-      }
-      unOpenedRef.current = [
-        ...unOpenedRef.current.filter((v) => v !== number),
-      ];
-      if (number) {
-        setGameStarted(true);
-      }
-      //   document.getElementById(selectedNumber).style.background = "orange";
+      //   console.log("selectedNumber: ", selectedNumberRef.current);
+      //   if (number < 1 || number > 12) {
+      //     setAlertPopUp({
+      //       open: true,
+      //       message: "Please select the number between 1 and 12",
+      //       color: "info",
+      //     });
+      //     return false;
+      //   }
+      //   unOpenedRef.current = [
+      //     ...unOpenedRef.current.filter((v) => v !== number),
+      //   ];
+      //   if (number) {
+      //     setGameStarted(true);
+      //   }
+      //   //   document.getElementById(selectedNumber).style.background = "orange";
+      // } else {
+      //   return;
+      // }
     }
   };
-  function boxClick(elem) {
-    if (!gameStarted) {
-      alert("Please click start button...");
-      return false;
-    }
 
-    // changing the box style after click
-    let boxNum = elem.innerHTML;
-
-    elem.parentNode.style.backgroundColor = "grey";
-
-    elem.textContent = amounts[boxNum - 1];
-    elem.onclick = nonclick;
-    elem.style.cursor = "none";
-    elem.style.color = "#fff";
-    elem.style.fontSize = "20px";
-
-    // Changing the style for amount text on the right side
-    let amtClass = `.amt-${amounts[boxNum - 1]}`;
-    if (amounts[boxNum - 1] == 0.1) {
-      amtClass = ".amt-01";
-    }
-
-    let amountTextBox = document.querySelector(amtClass);
-    amountTextBox.style.textDecoration = "line-through";
-    amountTextBox.style.background = "grey";
-  }
   function nonclick() {
     return false;
   }
+  const handleOkay = () => {
+    if (currentGameTokens < 200) {
+      setAlertPopUp({
+        open: true,
+        message:
+          "You don't have enough game tokens to play this game. Please add tokens  ans try Agian!!",
+        color: "danger",
+      });
+      return;
+    }
+    setAccepted(true);
+
+    setMoneyModal(false);
+    // if (accepted) {
+    console.log("currentGameTokens: ", currentGameTokens);
+    let number = parseInt(prompt("Select a box between 1 to 12"));
+    //   setSelectedNumber(number);
+    selectedNumberRef.current = number;
+    setLastOpenedBox(number);
+
+    console.log("selectedNumber: ", selectedNumberRef.current);
+    if (number < 1 || number > 12) {
+      setAlertPopUp({
+        open: true,
+        message: "Please select the number between 1 and 12",
+        color: "info",
+      });
+      return false;
+    }
+    unOpenedRef.current = [...unOpenedRef.current.filter((v) => v !== number)];
+    if (number) {
+      setCurrentGameTokens(currentGameTokens - 200);
+      localStorage.setItem("g1", currentGameTokens - 200);
+      setGameStarted(true);
+    }
+    //   document.getElementById(selectedNumber).style.background = "orange";
+    // } else {
+    //   return;
+    // }
+  };
+
+  const restartHandler = () => {
+    console.log("first");
+    window.location.reload();
+  };
   return (
     <div className="container">
       <Card className="w-100 mt-5">
@@ -311,7 +348,13 @@ function DealOrNoDeal() {
                     <Button
                       id="startButton"
                       className="restart-btn"
-                      onClick={startGame}
+                      onClick={
+                        gameStarted
+                          ? () => {
+                              setRestartModal(true);
+                            }
+                          : startGame
+                      }
                       color="primary"
                     >
                       {gameStarted ? "Restart Game" : "Start Playing"}
@@ -404,7 +447,70 @@ function DealOrNoDeal() {
             type="submit"
             onClick={() => {
               setWinModal(!winModal);
+              localStorage.setItem("g1", currentGameTokens + winAmount);
+              setGameCompleted(true);
               navigate("/p1.html");
+            }}
+          >
+            Cancel
+          </Button>{" "}
+        </ModalFooter>
+      </Modal>
+      <Modal isOpen={moneyModal} toggle={handleMoneyModal}>
+        <ModalHeader toggle={handleMoneyModal}>Alert!!</ModalHeader>
+        <ModalBody>
+          This Game will charge you 200 tokens to Playing Click <b>Okay</b> to
+          continue or click <b>Cancel</b> to continue.
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            color="secondary"
+            onClick={() => {
+              // handleContinue();
+              setMoneyModal(!moneyModal);
+              handleOkay();
+              //   window.reload();
+            }}
+          >
+            Okay
+          </Button>
+          <Button
+            color="primary"
+            type="submit"
+            onClick={() => {
+              setMoneyModal(!moneyModal);
+              navigate("/p1.html");
+            }}
+          >
+            Cancel
+          </Button>{" "}
+        </ModalFooter>
+      </Modal>
+      <Modal isOpen={restartModal} toggle={handleMoneyModal}>
+        <ModalHeader toggle={handleMoneyModal}>Alert!!</ModalHeader>
+        <ModalBody>
+          If you restart the you will loose your money. Press continue to
+          restart.
+        </ModalBody>
+        <ModalFooter>
+          <Button
+            color="secondary"
+            onClick={() => {
+              // handleContinue();
+              restartHandler();
+              setRestartModal(!restartModal);
+              handleOkay();
+              //   window.reload();
+            }}
+          >
+            continue
+          </Button>
+          <Button
+            color="primary"
+            type="submit"
+            onClick={() => {
+              setRestartModal(!restartModal);
+              // navigate("/p1.html");
             }}
           >
             Cancel
