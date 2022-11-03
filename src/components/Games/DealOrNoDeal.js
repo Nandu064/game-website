@@ -9,12 +9,18 @@ import {
   ModalFooter,
   CardHeader,
   Col,
+  Alert,
   Row,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import "../../styles/dealorNodeal.css";
 function DealOrNoDeal() {
   const navigate = useNavigate();
+  const [alertPopUp, setAlertPopUp] = useState({
+    open: false,
+    color: "",
+    message: "",
+  });
   const [boxes, setBoxes] = useState([]);
   const [gameStarted, setGameStarted] = useState(false);
   const [selectedBox, setSelectedBox] = useState([]);
@@ -66,6 +72,14 @@ function DealOrNoDeal() {
     setCurrentGameTokens(gameTokens);
   }, []);
   useEffect(() => {
+    setTimeout(() => {
+      setAlertPopUp({
+        ...alertPopUp,
+        open: false,
+      });
+    }, 5000);
+  }, [alertPopUp.open]);
+  useEffect(() => {
     if (desicion === "deal") {
       setWinModal(true);
       setWinAmount(dealAmount);
@@ -77,7 +91,11 @@ function DealOrNoDeal() {
   };
   const numberHandler = (number) => {
     if (!gameStarted) {
-      alert("Please click start button...");
+      setAlertPopUp({
+        open: true,
+        color: "info",
+        message: "Please click start button...",
+      });
       return false;
     }
     setSelectedBox([...selectedBox, number]);
@@ -118,6 +136,15 @@ function DealOrNoDeal() {
     if (gameStarted) {
       window.location.reload();
     } else {
+      console.log("currentGameTokens: ", currentGameTokens);
+      if (Number(currentGameTokens) <= 0) {
+        setAlertPopUp({
+          open: true,
+          message: "Not enough tokens",
+          color: "danger",
+        });
+        return;
+      }
       let number = parseInt(prompt("Select a box between 1 to 12"));
       //   setSelectedNumber(number);
       selectedNumberRef.current = number;
@@ -125,7 +152,11 @@ function DealOrNoDeal() {
 
       console.log("selectedNumber: ", selectedNumberRef.current);
       if (number < 1 || number > 12) {
-        alert("Please select the number between 1 and 24");
+        setAlertPopUp({
+          open: true,
+          message: "Please select the number between 1 and 12",
+          color: "info",
+        });
         return false;
       }
       unOpenedRef.current = [
@@ -290,32 +321,34 @@ function DealOrNoDeal() {
               </Row>
             </Col>
             <Col xs={4}>
-              <div>
-                <h3 className="amount-text">Amounts to Win</h3>
-                <ul>
-                  {amounts.slice(0, 6).map((amount) => (
-                    <li
-                      className={`text-center amt-${amount} ${
-                        displayedAmount.includes(amount) ? "revelAmount" : ""
-                      }`}
-                      key={amount}
-                    >
-                      $ {amount}
-                    </li>
-                  ))}
-                </ul>
-                <ul>
-                  {amounts.slice(6, 12).map((amount) => (
-                    <li
-                      key={amount}
-                      className={`text-center amt-${amount} ${
-                        displayedAmount.includes(amount) ? "revelAmount" : ""
-                      }`}
-                    >
-                      $ {amount}
-                    </li>
-                  ))}
-                </ul>
+              <div className="d-flex justify-content-center">
+                <div>
+                  <h3 className="amount-text">Amounts to Win</h3>
+                  <ul>
+                    {amounts.slice(0, 6).map((amount) => (
+                      <li
+                        className={`text-center amt-${amount} ${
+                          displayedAmount.includes(amount) ? "revelAmount" : ""
+                        }`}
+                        key={amount}
+                      >
+                        $ {amount}
+                      </li>
+                    ))}
+                  </ul>
+                  <ul>
+                    {amounts.slice(6, 12).map((amount) => (
+                      <li
+                        key={amount}
+                        className={`text-center amt-${amount} ${
+                          displayedAmount.includes(amount) ? "revelAmount" : ""
+                        }`}
+                      >
+                        $ {amount}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </Col>
           </Row>
@@ -378,6 +411,21 @@ function DealOrNoDeal() {
           </Button>{" "}
         </ModalFooter>
       </Modal>
+      <Alert
+        color={alertPopUp.color}
+        isOpen={alertPopUp.open}
+        style={{
+          position: "absolute",
+          top: "10px",
+          right: "10px",
+          height: "55px",
+          maxWidth: "60%",
+        }}
+        toggle={() => setAlertPopUp({ ...alertPopUp, open: false })}
+        fade={true}
+      >
+        <span className={`text-dark`}>{alertPopUp.message}</span>
+      </Alert>
     </div>
   );
 }

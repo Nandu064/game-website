@@ -26,6 +26,7 @@ function LandingPage() {
   const [tokens, setTokens] = useState(null);
   const [totalTokens, setTotalTokens] = useState();
   const [gameTokens, setGameTokens] = useState({});
+  const [selectedGame, setSelectedGame] = useState("");
   useEffect(() => {
     let tokens = Number(localStorage.getItem("gT"));
     console.log("tokens: ", tokens);
@@ -42,15 +43,24 @@ function LandingPage() {
     setShowSplitTokensModal(!showSplitTokensModal);
   };
   const handleSubmit = (values) => {
-    localStorage.setItem("gT", tokens);
+    let lstokens = localStorage.getItem("gT");
+    console.log("lstokens: ", lstokens);
+    if (lstokens) {
+      lstokens = Number(lstokens);
+    } else {
+      lstokens = 0;
+    }
+    localStorage.setItem("gT", Number(lstokens) + Number(tokens));
+    setTotalTokens(lstokens + tokens);
     handleModal();
   };
   const handleSplitSubmit = (game) => {
     // localStorage.setItem("gT", tokens);
+    // let totalTokens = Number(localStorage.getItem("gT"));
     let splitToken = Number(splitTokens);
     console.log("splitToken: ", splitToken);
     console.log("totalTokens: ", totalTokens);
-    if (splitToken < totalTokens) {
+    if (splitToken <= totalTokens) {
       let tokens = Number(localStorage.getItem("gT"));
       localStorage.setItem("gT", tokens - splitToken);
       let gameTokens = Number(localStorage.getItem(game));
@@ -112,7 +122,7 @@ function LandingPage() {
                     >
                       <Card className="p-3 d-flex">
                         <CardBody className="d-flex justify-content-start p-0">
-                          <div className="item_image">
+                          <div className="item_image d-flex align-items-center">
                             <img
                               style={{
                                 width: "50px",
@@ -157,6 +167,7 @@ function LandingPage() {
                                 onClick={(e) => {
                                   e.preventDefault();
                                   e.stopPropagation();
+                                  setSelectedGame("g1");
                                   handleSplitModal();
                                 }}
                               >
@@ -169,64 +180,67 @@ function LandingPage() {
                     </Link>
                   </div>
                 </Col>
-                {/* <Col xs={12} md={10} className="bg-secondary m-auto">
+                <Col xs={12} md={10} className="bg-secondary m-auto">
                   <div className="w-100 p-3">
-                    <Card className="p-3 d-flex">
-                      <CardBody className="d-flex justify-content-start p-0">
-                        <div className="item_image">
-                          <img
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              borderRadius: "6px",
-                            }}
-                            src="https://msngames.online/assets/cache_image/games/deal-or-no-deal_250x150_a3c.webp"
-                            alt="img"
-                          />
-                        </div>
-                        <div
-                          className="title ms-2"
-                          style={{
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "flex-start",
-                          }}
-                        >
-                          <h5
-                            className="mb-0"
-                            style={{
-                              textAlign: "left",
-                            }}
-                          >
-                            Deal or No-Deal
-                          </h5>
+                    <Link to="/trivia" style={{ textDecoration: "none" }}>
+                      <Card className="p-3 d-flex">
+                        <CardBody className="d-flex justify-content-start p-0">
+                          <div className="item_image d-flex align-items-center">
+                            <img
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                borderRadius: "6px",
+                              }}
+                              src="https://msngames.online/assets/cache_image/games/deal-or-no-deal_250x150_a3c.webp"
+                              alt="img"
+                            />
+                          </div>
                           <div
-                            className="text-muted"
+                            className="title ms-2"
                             style={{
-                              textAlign: "left",
+                              width: "100%",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "flex-start",
                             }}
                           >
-                            <span style={{ display: "inline-block" }}>
-                              Available Tokens: {gameTokens["g2"] ?? 0}
-                            </span>
-                            <span
-                              style={{ display: "inline-block" }}
-                              className="plusButton"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                handleSplitModal();
+                            <h5
+                              className="mb-0"
+                              style={{
+                                textAlign: "left",
                               }}
                             >
-                              +
-                            </span>
+                              Trivia Game
+                            </h5>
+                            <div
+                              className="text-muted"
+                              style={{
+                                textAlign: "left",
+                              }}
+                            >
+                              <span style={{ display: "inline-block" }}>
+                                Available Tokens: {gameTokens["g2"] ?? 0}
+                              </span>
+                              <span
+                                style={{ display: "inline-block" }}
+                                className="plusButton"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  setSelectedGame("g2");
+                                  handleSplitModal();
+                                }}
+                              >
+                                +
+                              </span>
+                            </div>
                           </div>
-                        </div>
-                      </CardBody>
-                    </Card>
+                        </CardBody>
+                      </Card>
+                    </Link>
                   </div>
-                </Col> */}
+                </Col>
               </Row>
             </CardBody>
           </Card>
@@ -287,7 +301,7 @@ function LandingPage() {
           <Button
             color="primary"
             type="submit"
-            onClick={() => handleSplitSubmit("g1")}
+            onClick={() => handleSplitSubmit(selectedGame)}
           >
             Split
           </Button>{" "}
