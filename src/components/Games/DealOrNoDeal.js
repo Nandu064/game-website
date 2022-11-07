@@ -124,11 +124,11 @@ function DealOrNoDeal() {
     }
   };
   const handleContinue = () => {
-    let avTokens = Number(localStorage.getItem("gT"));
-    console.log("avTokens: ", avTokens);
+    // console.log("avTokens: ", avTokens);
     // setGameCompleted(true);
-    // let total = avTokens + winAmount;
-    // localStorage.setItem("gT", total);
+    let avTokens = Number(localStorage.getItem("gT"));
+    let total = avTokens + winAmount;
+    localStorage.setItem("gT", total);
     localStorage.setItem("g1", currentGameTokens + winAmount);
     setWinModal(false);
     window.location.reload();

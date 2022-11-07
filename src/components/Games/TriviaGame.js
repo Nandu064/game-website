@@ -149,6 +149,9 @@ const TriviaGame = () => {
   const finishHandler = () => {
     setWinModal(!winModal);
     let finalScore = Number(localStorage.getItem("score"));
+    let avTokens = Number(localStorage.getItem("gT"));
+    let total = avTokens + finalScore;
+    localStorage.setItem("gT", total);
     let currentGT = Number(localStorage.getItem("g2"));
     localStorage.setItem("g2", finalScore + currentGT);
     // console.log("final", score);

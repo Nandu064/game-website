@@ -11,13 +11,13 @@
       },
       {
         "difficulty": "medium",
-        "question": "The country song  &ldquo;A Boy Named Sue&rdquo; was written by Shel Silverstein.",
+        "question": "The country song  'A Boy Named Sue' was written by Shel Silverstein.",
         "correct_answer": "True",
         "incorrect_answers": ["False"]
       },
       {
         "difficulty": "hard",
-        "question": "Pete Townshend&#039;s solo album, &quot;White City: A Novel&quot;, is set in the metropolitan area of Chicago.",
+        "question": "Pete Townshend's solo album, 'White City: A Novel', is set in the metropolitan area of Chicago.",
         "correct_answer": "False",
         "incorrect_answers": ["True"]
       }
@@ -29,13 +29,13 @@
     "questions": [
       {
         "difficulty": "easy",
-        "question": "Stephen Chbosky wrote the book &#039;The Perks of Being A Wallflower&#039;.",
+        "question": "Stephen Chbosky wrote the book 'The Perks of Being A Wallflower'.",
         "correct_answer": "True",
         "incorrect_answers": ["False"]
       },
       {
         "difficulty": "medium",
-        "question": "The country song  &ldquo;A Boy Named Sue&rdquo; was written by Shel Silverstein1.",
+        "question": "Originally, the character Charlie from Charlie and the Chocolate Factory was going to be black.",
         "correct_answer": "True",
         "incorrect_answers": ["False"]
       },
@@ -53,19 +53,19 @@
     "questions": [
       {
         "difficulty": "medium",
-        "question": "The Xenomorph from the science fiction film &quot;Alien&quot; has acidic blood.",
+        "question": "The Xenomorph from the science fiction film 'Alien' has acidic blood.",
         "correct_answer": "True",
         "incorrect_answers": ["False"]
       },
       {
         "difficulty": "easy",
-        "question": "The movie &quot;The Nightmare before Christmas&quot; was all done with physical objects.",
+        "question": "The movie 'The Nightmare before Christmas' was all done with physical objects.",
         "correct_answer": "True",
         "incorrect_answers": ["False"]
       },
       {
         "difficulty": "hard",
-        "question": "The weapon Clint Eastwood uses in &quot;Dirty Harry&quot; was a .44 Automag.",
+        "question": "The weapon Clint Eastwood uses in 'Dirty Harry' was a .44 Automag.",
         "correct_answer": "False",
         "incorrect_answers": ["True"]
       }
