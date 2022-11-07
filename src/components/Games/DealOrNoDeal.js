@@ -9,11 +9,14 @@ import {
   ModalFooter,
   CardHeader,
   Col,
-  Alert,
+  // Alert,
   Row,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import "../../styles/dealorNodeal.css";
+import MoneyModal from "../Modals/MoneyModal";
+import AlertPopUp from "../Modals/Alert";
+import WinModal from "../Modals/WinModal";
 function DealOrNoDeal() {
   const navigate = useNavigate();
   const [alertPopUp, setAlertPopUp] = useState({
@@ -38,9 +41,6 @@ function DealOrNoDeal() {
   const [currentGameTokens, setCurrentGameTokens] = useState();
   const [moneyModal, setMoneyModal] = useState(false);
   const [accepted, setAccepted] = useState(false);
-  const [deductedTokens, setDeductedTokens] = useState(200);
-  const [finalTokens, setFinalTokens] = useState();
-  const [gameCompleted, setGameCompleted] = useState(false);
   const [restartModal, setRestartModal] = useState(false);
 
   const shuffle = (array) => {
@@ -119,14 +119,14 @@ function DealOrNoDeal() {
     if (lastOpenedBox === number) {
       setWinModal(true);
       setWinAmount(amounts[lastOpenedBox - 1]);
-      setGameCompleted(true);
+      // setGameCompleted(true);
       winAmountRef.current = amounts[lastOpenedBox];
     }
   };
   const handleContinue = () => {
     let avTokens = Number(localStorage.getItem("gT"));
     console.log("avTokens: ", avTokens);
-    setGameCompleted(true);
+    // setGameCompleted(true);
     // let total = avTokens + winAmount;
     // localStorage.setItem("gT", total);
     localStorage.setItem("g1", currentGameTokens + winAmount);
@@ -241,7 +241,7 @@ function DealOrNoDeal() {
         <CardHeader className="bg-transparent border-0 ">
           <Row className="d-flex align-items-center justify-content-between">
             <Col xs={8}>
-              <h2 className="title">Deal | No Deal</h2>
+              <h3 className="title">Deal | No Deal</h3>
             </Col>
             <Col xs={4}>
               <span style={{ fontSize: "20px", fontWeight: "bold" }}>
@@ -426,7 +426,7 @@ function DealOrNoDeal() {
         </ModalFooter>
       </Modal>
       {/* winning Modal */}
-      <Modal isOpen={winModal} toggle={handleDealModal}>
+      {/* <Modal isOpen={winModal} toggle={handleDealModal}>
         <ModalHeader toggle={handleDealModal}>You Won!!</ModalHeader>
         <ModalBody>
           Tada ! You won ${winAmount}. Do you want to continue?
@@ -448,44 +448,52 @@ function DealOrNoDeal() {
             onClick={() => {
               setWinModal(!winModal);
               localStorage.setItem("g1", currentGameTokens + winAmount);
-              setGameCompleted(true);
+              // setGameCompleted(true);
               navigate("/p1.html");
             }}
           >
             Cancel
           </Button>{" "}
         </ModalFooter>
-      </Modal>
-      <Modal isOpen={moneyModal} toggle={handleMoneyModal}>
-        <ModalHeader toggle={handleMoneyModal}>Alert!!</ModalHeader>
-        <ModalBody>
-          This Game will charge you 200 tokens to Playing Click <b>Okay</b> to
-          continue or click <b>Cancel</b> to continue.
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            color="secondary"
-            onClick={() => {
-              // handleContinue();
-              setMoneyModal(!moneyModal);
-              handleOkay();
-              //   window.reload();
-            }}
-          >
-            Okay
-          </Button>
-          <Button
-            color="primary"
-            type="submit"
-            onClick={() => {
-              setMoneyModal(!moneyModal);
-              navigate("/p1.html");
-            }}
-          >
-            Cancel
-          </Button>{" "}
-        </ModalFooter>
-      </Modal>
+      </Modal> */}
+      {winModal && (
+        <WinModal
+          show={winModal}
+          toggle={handleDealModal}
+          finalAmount={winAmount}
+          continueHandler={() => {
+            handleContinue();
+            setWinModal(!winModal);
+            //   window.reload();
+          }}
+          cancelHandler={() => {
+            setWinModal(!winModal);
+            localStorage.setItem("g1", currentGameTokens + winAmount);
+            // setGameCompleted(true);
+            navigate("/p1.html");
+          }}
+        />
+      )}
+      {moneyModal && (
+        <MoneyModal
+          show={moneyModal}
+          toggle={handleMoneyModal}
+          onOkay={() => {
+            // handleContinue();
+            setMoneyModal(!moneyModal);
+            handleOkay();
+            //   window.reload();
+          }}
+          onCancel={() => {
+            setMoneyModal(!moneyModal);
+            navigate("/p1.html");
+          }}
+          message={`This Game will charge you 200 tokens. Click Okay to
+          continue or click Cancel to go to homepage.`}
+          OkayButtonLabel={"Okay"}
+          isCancel={true}
+        />
+      )}
       <Modal isOpen={restartModal} toggle={handleMoneyModal}>
         <ModalHeader toggle={handleMoneyModal}>Alert!!</ModalHeader>
         <ModalBody>
@@ -517,21 +525,10 @@ function DealOrNoDeal() {
           </Button>{" "}
         </ModalFooter>
       </Modal>
-      <Alert
-        color={alertPopUp.color}
-        isOpen={alertPopUp.open}
-        style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          height: "55px",
-          maxWidth: "60%",
-        }}
-        toggle={() => setAlertPopUp({ ...alertPopUp, open: false })}
-        fade={true}
-      >
-        <span className={`text-dark`}>{alertPopUp.message}</span>
-      </Alert>
+      <AlertPopUp
+        alert={alertPopUp}
+        toggleAlert={() => setAlertPopUp({ ...alertPopUp, open: false })}
+      />
     </div>
   );
 }

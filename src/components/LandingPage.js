@@ -196,7 +196,7 @@ function LandingPage() {
                                 height: "50px",
                                 borderRadius: "6px",
                               }}
-                              src="https://msngames.online/assets/cache_image/games/deal-or-no-deal_250x150_a3c.webp"
+                              src="https://media.istockphoto.com/id/1064066314/vector/trivia.jpg?s=612x612&w=0&k=20&c=2nOgYEDjvuopbzXcReqnt7nCNKdWROLQ8uQFIGch3kE="
                               alt="img"
                             />
                           </div>

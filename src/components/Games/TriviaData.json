@@ -1,0 +1,74 @@
+[
+  {
+    "category": "Music",
+    "id": 10,
+    "questions": [
+      {
+        "difficulty": "easy",
+        "question": "A Saxophone is a brass instrument.",
+        "correct_answer": "False",
+        "incorrect_answers": ["True"]
+      },
+      {
+        "difficulty": "medium",
+        "question": "The country song  &ldquo;A Boy Named Sue&rdquo; was written by Shel Silverstein.",
+        "correct_answer": "True",
+        "incorrect_answers": ["False"]
+      },
+      {
+        "difficulty": "hard",
+        "question": "Pete Townshend&#039;s solo album, &quot;White City: A Novel&quot;, is set in the metropolitan area of Chicago.",
+        "correct_answer": "False",
+        "incorrect_answers": ["True"]
+      }
+    ]
+  },
+  {
+    "category": "Books",
+    "id": 11,
+    "questions": [
+      {
+        "difficulty": "easy",
+        "question": "Stephen Chbosky wrote the book &#039;The Perks of Being A Wallflower&#039;.",
+        "correct_answer": "True",
+        "incorrect_answers": ["False"]
+      },
+      {
+        "difficulty": "medium",
+        "question": "The country song  &ldquo;A Boy Named Sue&rdquo; was written by Shel Silverstein1.",
+        "correct_answer": "True",
+        "incorrect_answers": ["False"]
+      },
+      {
+        "difficulty": "hard",
+        "question": "Harry Potter was born on July 31st, 1980.",
+        "correct_answer": "True",
+        "incorrect_answers": ["False"]
+      }
+    ]
+  },
+  {
+    "category": "Film",
+    "id": 11,
+    "questions": [
+      {
+        "difficulty": "medium",
+        "question": "The Xenomorph from the science fiction film &quot;Alien&quot; has acidic blood.",
+        "correct_answer": "True",
+        "incorrect_answers": ["False"]
+      },
+      {
+        "difficulty": "easy",
+        "question": "The movie &quot;The Nightmare before Christmas&quot; was all done with physical objects.",
+        "correct_answer": "True",
+        "incorrect_answers": ["False"]
+      },
+      {
+        "difficulty": "hard",
+        "question": "The weapon Clint Eastwood uses in &quot;Dirty Harry&quot; was a .44 Automag.",
+        "correct_answer": "False",
+        "incorrect_answers": ["True"]
+      }
+    ]
+  }
+]
